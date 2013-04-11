@@ -655,21 +655,34 @@ http://code.google.com/p/selenium/wiki/JsonWireProtocol
 
       *\*args:* Any applicable arguments for your JavaScript.
 
+      Returns the value evaluated by JavaScript.
+
       Usage::
 
         driver.execute_script('document.title')
 
    .. method:: execute_async_script(script, \*args)
 
-      Asynchronously Executes JavaScript in the current window/frame.
+      Asynchronously Executes JavaScript in the current window/frame.  Python
+      execution will be blocked until the JavaScript code calls the callback.
 
       *script:* The JavaScript to execute.
 
       *\*args:* Any applicable arguments for your JavaScript.
 
+      Returns first argument passed into the callback.
+
       Usage::
 
-        driver.execute_async_script('document.title')
+        data = driver.execute_async_script("""
+        var my_text = arguments[0],
+            my_number = arguments[1],
+            callback = arguments[arguments.length - 1];
+
+        setTimeout(function () {
+          callback("it worked");
+        }, 1000);
+        """, "hello world", 1337)
 
    .. attribute:: current_url
 
